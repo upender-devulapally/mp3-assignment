@@ -23,8 +23,8 @@ class Song
     if query.blank?
       scoped
     else query
-     reg_term = /.*#{query}.*/i
-      any_of({title: reg_term},{album: reg_term},{artist: reg_term})
+    reg_term = /.*#{query}.*/i
+    any_of({title: reg_term},{album: reg_term},{artist: reg_term})
     end
   end
 
