@@ -4,7 +4,7 @@ class SongsController < ApplicationController
   before_filter :find_song ,except: [:create,:index,:new]
   before_filter :get_mp3_tag_info,only: [:create]
   def index
-    @songs = Song.all
+    @songs = Song.search(params[:query])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @songs }
