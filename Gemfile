@@ -1,24 +1,17 @@
 source 'https://rubygems.org'
-
 ruby '1.9.3'
-gem 'rails', '3.2.9'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rails', '3.2.11'
 
-
-
-# Gems used only for assets and not required
-# in production environments by default.
+gem "heroku"
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails', '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
+  #gem "less-rails", "~> 2.2.6"
+  #gem 'therubyracer', '0.11.1', :platform => :ruby
   gem 'uglifier', '>= 1.0.3'
 end
+
 
 gem 'jquery-rails'
 
@@ -40,16 +33,16 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'figaro'
 gem 'haml-rails'
-gem 'libv8'
+gem 'libv8', '~> 3.11.8'
 gem 'mongoid'
 gem 'thin'
-
-group :assets do
-  gem 'therubyracer', :platform=>:ruby, :require=>"v8"
-end
+gem 'carrierwave', :git => "git://github.com/jnicklas/carrierwave.git"
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'mime-types', :require => "mime/types"
+gem 'ruby-mp3info', :require => "mp3info"
 
 group :development do
-  gem 'better_errors'
+ # gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_19, :rbx]
   gem 'html2haml'
   gem 'hub', :require=>nil
