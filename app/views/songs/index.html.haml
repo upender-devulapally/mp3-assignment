@@ -2,14 +2,20 @@
 
 %table
   %tr
+    %th Album
     %th Title
+    %th Artist
+    %th Tracknum
     %th
     %th
     %th
 
   - @songs.each do |song|
     %tr
+      %td= song.album
       %td= song.title
+      %td= song.artist
+      %td= song.tracknum
       %td= link_to 'Show', song
       %td= link_to 'Edit', edit_song_path(song)
       %td= link_to 'Destroy', song, :method => :delete, :data => { :confirm => 'Are you sure?' }

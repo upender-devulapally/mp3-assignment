@@ -1,9 +1,10 @@
 class SongsController < ApplicationController
   # GET /songs
   # GET /songs.json
+  before_filter :find_song ,except: [:create,:index,:new]
+  before_filter :get_mp3_tag_info,only: [:create]
   def index
     @songs = Song.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @songs }
@@ -13,7 +14,7 @@ class SongsController < ApplicationController
   # GET /songs/1
   # GET /songs/1.json
   def show
-    @song = Song.find(params[:id])
+
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,7 +26,6 @@ class SongsController < ApplicationController
   # GET /songs/new.json
   def new
     @song = Song.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @song }
@@ -34,14 +34,13 @@ class SongsController < ApplicationController
 
   # GET /songs/1/edit
   def edit
-    @song = Song.find(params[:id])
+
   end
 
   # POST /songs
   # POST /songs.json
   def create
     @song = Song.new(params[:song])
-
     respond_to do |format|
       if @song.save
         format.html { redirect_to @song, notice: 'Song was successfully created.' }
@@ -56,8 +55,6 @@ class SongsController < ApplicationController
   # PUT /songs/1
   # PUT /songs/1.json
   def update
-    @song = Song.find(params[:id])
-
     respond_to do |format|
       if @song.update_attributes(params[:song])
         format.html { redirect_to @song, notice: 'Song was successfully updated.' }
@@ -72,12 +69,32 @@ class SongsController < ApplicationController
   # DELETE /songs/1
   # DELETE /songs/1.json
   def destroy
-    @song = Song.find(params[:id])
     @song.destroy
-
     respond_to do |format|
       format.html { redirect_to songs_url }
       format.json { head :no_content }
     end
   end
+
+  protected
+  def find_song
+    @song = Song.find(params[:id])
+  end
+
+  def get_mp3_tag_info
+    return unless params[:song]  and params[:song][:mp3]
+    file = params[:song][:mp3]
+    #ext = MIME::Types[file.content_type].first.extensions.first #better to check with myme type
+    path = file.respond_to?(:path) ? file.path : file.tempfile.path
+    if file.original_filename =~ /.mp3$/
+      Mp3Info.open(path) do |r|
+        @title = r.tag.title
+        @artist = r.tag.artist
+        @album = r.tag.album
+        @tracknum = r.tag.tracknum
+      end
+    end
+    params[:song].merge!(title: @title,artist: @artist,album: @album,tracknum: @tracknum)
+  end
+
 end
