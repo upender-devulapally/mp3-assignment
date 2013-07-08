@@ -1,11 +1,12 @@
 %h1 Listing songs
-.search_songs
+.search_songs{style: 'padding: 10px;'}
   = form_tag songs_path,method: :get do
     = text_field_tag :query ,params[:query]
     = submit_tag 'Search' ,disable_with: 'wait ..'
+    = link_to 'Refresh', songs_path
 
 
-%table
+%table{border: 1}
   %tr
     %th Album
     %th Title
@@ -21,7 +22,7 @@
       %td= song.title
       %td= song.artist
       %td= song.tracknum
-      %td= link_to 'Show', song
+      %td= link_to 'Show/Play', song
       %td= link_to 'Edit', edit_song_path(song)
       %td= link_to 'Destroy', song, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
